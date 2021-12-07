@@ -1,0 +1,16 @@
+{
+  "name": "google_tiles_downloader",
+  "version": "1.0.0",
+  "description": "google tiles downloader",
+  "main": "index.js",
+  "dependencies": {
+    "@mapbox/mbtiles": "^0.12.1",
+    "axios": "^0.24.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "wanyanyan",
+  "license": "ISC"
+}
