@@ -16,19 +16,6 @@ y 影像含标注
 
 https://khms0.google.com/kh/v=868?x=${x}&y=${y}&z=${z}
 
-请求瓦片  z:18  x: 214436  y: 107807
-z:18 x:214432 y:107807 错误码:undefined url:http://khm1.google.com/kh?v=908&hl=en&x=2144
-32&y=107807&z=18
-请求瓦片  z:18  x: 214437  y: 107807
-z:18 x:214434 y:107807 错误码:undefined url:http://khm1.google.com/kh?v=908&hl=en&x=2144
-34&y=107807&z=18
-请求瓦片  z:18  x: 214438  y: 107807
-z:18 x:214433 y:107807 错误码:undefined url:http://khm1.google.com/kh?v=908&hl=en&x=2144
-33&y=107807&z=18
-请求瓦片  z:18  x: 214439  y: 107807
-z:18 x:214435 y:107807 错误码:undefined url:http://khm1.google.com/kh?v=908&hl=en&x=2144
-35&y=107807&z=18
-请求瓦片  z:18  x: 214440  y: 107807
 
 :12 x:3002 y:1837 错误码:undefined url:http://khm1.google.com/kh?v=908&
 hl=en&x=3002&y=1837&z=12

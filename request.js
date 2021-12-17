@@ -1,22 +1,28 @@
 var fs = require('fs')
 const axios = require("axios");
+const outputPath = "E:\\tiles";
+
+const urls = [
+  "http://mt1.google.cn/vt/lyrs=s@110",
+  "http://khm1.google.com/kh?v=908&hl=en",
+];
 
 function requestTile(z, x, y, callback) {
-    console.log(`请求瓦片  z:${z}  x: ${x}  y: ${y}`);
-  //`http://www.talkgis.com:9966/proxy/tiles/${z}/${x}/${y}`
-  if (fs.existsSync(`./tiles/${z}`)) {
-    if (!fs.existsSync(`./tiles/${z}/${x}`)) {
-      fs.mkdirSync(`./tiles/${z}/${x}`);
+  //process.stdout(`请求瓦片  z:${z} x:${x} y:${y}`);
+  console.log(`请求瓦片  z:${z} x:${x} y:${y}`);
+  if (fs.existsSync(`${outputPath}/${z}`)) {
+    if (!fs.existsSync(`${outputPath}/${z}/${x}`)) {
+      fs.mkdirSync(`${outputPath}/${z}/${x}`);
     }
   } else {
-    fs.mkdirSync(`./tiles/${z}`);
-    fs.mkdirSync(`./tiles/${z}/${x}`);
+    fs.mkdirSync(`${outputPath}/${z}`);
+    fs.mkdirSync(`${outputPath}/${z}/${x}`);
   }
 
   axios({
     method: "get",
     //url: `http://mt2.google.cn/vt/lyrs=s&scale=1&hl=zh-CN&gl=cn&x=${x}&y=${y}&z=${z}`,
-    url: `http://khm1.google.com/kh?v=908&hl=en&x=${x}&y=${y}&z=${z}`,
+    url: `${urls[0]}&x=${x}&y=${y}&z=${z}`,
     responseType: "stream",
     proxy: {
       host: "127.0.0.1",
@@ -28,7 +34,7 @@ function requestTile(z, x, y, callback) {
     },
   })
     .then(function (response) {
-      const writer = fs.createWriteStream(`./tiles/${z}/${x}/${y}.jpg`);
+      const writer = fs.createWriteStream(`${outputPath}/${z}/${x}/${y}.jpg`);
       response.data.pipe(writer);
       callback(null);
     })
