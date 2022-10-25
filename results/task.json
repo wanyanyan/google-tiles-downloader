@@ -1,0 +1,21 @@
+{
+  "area": {
+    "bounds": [
+      -180,
+      -85.05,
+      180,
+      85.05
+    ],
+    "minzoom": 0,
+    "maxzoom": 5
+  },
+  "progress": {
+    "zoom": 5,
+    "x": 32,
+    "y": 31,
+    "minx": 0,
+    "miny": 0,
+    "maxx": 32,
+    "maxy": 31
+  }
+}

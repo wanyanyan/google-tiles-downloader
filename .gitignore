@@ -22,3 +22,5 @@
 
 tiles/
 node_modules/
+/*/results/
+/*/logs/

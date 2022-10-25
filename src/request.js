@@ -1,6 +1,6 @@
 var fs = require('fs')
 const axios = require("axios");
-const outputPath = "E:\\tiles";
+const outputPath = "./results";
 
 const urls = [
   "http://mt1.google.cn/vt/lyrs=s@110",
@@ -8,7 +8,6 @@ const urls = [
 ];
 
 function requestTile(z, x, y, callback) {
-  //process.stdout(`请求瓦片  z:${z} x:${x} y:${y}`);
   console.log(`请求瓦片  z:${z} x:${x} y:${y}`);
   if (fs.existsSync(`${outputPath}/${z}`)) {
     if (!fs.existsSync(`${outputPath}/${z}/${x}`)) {
@@ -21,8 +20,7 @@ function requestTile(z, x, y, callback) {
 
   axios({
     method: "get",
-    //url: `http://mt2.google.cn/vt/lyrs=s&scale=1&hl=zh-CN&gl=cn&x=${x}&y=${y}&z=${z}`,
-    url: `${urls[0]}&x=${x}&y=${y}&z=${z}`,
+    url: `${urls[1]}&x=${x}&y=${y}&z=${z}`,
     responseType: "stream",
     proxy: {
       host: "127.0.0.1",

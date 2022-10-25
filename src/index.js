@@ -57,7 +57,6 @@ function requestGrid() {
       fs.appendFileSync("./log.txt", `${util.formatTime('yyyy-MM-dd HH:mm:ss')}  所有格网请求完成\n`, "utf-8");
       return
     }
-    
   }
   let grid = downloadGrids.shift();
   fs.appendFileSync("./log.txt", `${util.formatTime('yyyy-MM-dd HH:mm:ss')}  开始下载：${grid.name}\n`, "utf-8");
