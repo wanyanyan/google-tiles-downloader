@@ -24,4 +24,8 @@ function start() {
 
 start()
 
-//taskManager.start()
+// let taskManager = new TaskManager({
+//   bounds: [-180, -85.05, 180, 85.05],
+//   minzoom: 0,
+//   maxzoom: 5
+// })
