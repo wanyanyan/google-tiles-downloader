@@ -1,6 +1,7 @@
 module.exports = {
   lngLat2TileCoord(lngLat, zoom) {
-    let { lng, lat } = lngLat;
+    let lng = lngLat[0]
+    let lat = lngLat[1]
     const scale = Math.pow(2, zoom);
     return {
       x: Math.floor(((180 + lng) / 360) * scale),
@@ -51,4 +52,15 @@ module.exports = {
         );
     return fmt;
   },
+  extend (dest, ...sources) {
+    for (const src of sources) {
+      for (const k in src) {
+        dest[k] = src[k]
+      }
+    }
+    return dest
+  },
+  endsWith (string, suffix) {
+    return string.indexOf(suffix, string.length - suffix.length) !== -1
+  }
 };

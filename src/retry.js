@@ -1,74 +1,88 @@
 var fs = require('fs')
-var path = require('path')
 var readline = require('readline')
-const requestTile = require("./request");
+var log = require('./log')
+var Event = require('./event')
 
-var logs = []
-var requestList = []
-var tasks = 0 // 当前任务数
+class RetryManager extends Event{
+  constructor(requestManager) {
+    super()
+    this.requestManager = requestManager
+  }
 
-const rl = readline.createInterface({
-    input: fs.createReadStream('./error.txt'),
-    output: process.stdout,
-    terminal: false
-})
+  retry() {
+    log.addInfo('开始重新请求出错的瓦片')
+    this.logs = []
+    this.requestList = []
+    this.tasks = 0 // 当前任务数
+    const rl = readline.createInterface({
+      input: fs.createReadStream('./logs/error.txt'),
+      output: process.stdout,
+      terminal: false
+    })
 
-rl.on('line', line => {
-    var arr = line.split(' ')
-    var z = pickInfo(arr[0])
-    var x = pickInfo(arr[1])
-    var y = pickInfo(arr[2])
-    var code = pickInfo(arr[3])
-    if (!Number(code) || Number(code) > 500) {
-      requestList.push({ z, x, y });
-    }
-})
+    rl.on('line', line => {
+      var arr = line.split(' ')
+      var z = this.pickInfo(arr[0])
+      var x = this.pickInfo(arr[1])
+      var y = this.pickInfo(arr[2])
+      var code = this.pickInfo(arr[3])
+      if (!Number(code) || Number(code) > 500) {
+        this.requestList.push({ z, x, y });
+      }
+    })
 
-rl.on('close', () => {
-    console.log('开始请求')
-    getTile();
-    //
-})
+    rl.on('close', () => {
+      console.log('开始请求')
+      this.getTile();
+      //
+    })
+  }
 
-function pickInfo(mes) {
+  pickInfo(mes) {
     return mes.split(':').pop()
-}
+  }
 
-function getTile() {
-    if (!requestList.length) {
-        return
+  getTile() {
+    if (!this.requestList.length) {
+      this.fire('on-complete')
+      return
     }
-    for(let i = tasks;i < 10; i++) {
-      if (!requestList.length) {
+    for (let i = this.tasks; i < 10; i++) {
+      if (!this.requestList.length) {
         break
       }
-      let {z, x, y} = requestList.pop()
-      requestTile(z, x, y, cb);
-      console.log(`还剩${requestList.length}个瓦片`);
-      tasks++
+      let { z, x, y } = this.requestList.pop()
+      this.requestManager.requestTile(z, x, y, this.cb.bind(this))
+      //requestTile(z, x, y, cb);
+      console.log(`还剩${this.requestList.length}个瓦片`);
+      this.tasks++
     }
-}
+  }
 
-function cb(data) {
-    tasks--
+  cb(data) {
+    this.tasks--
+    //console.log(data)
     if (data) { // 失败
       let code = data.error.response && data.error.response.status;
       if (code != 400 && code != 404) {
         let { z, x, y } = data.coord;
-        let msg = `z:${z} x:${x} y:${y} 错误码:${
-          data.error.response && data.error.response.status
-        } url:${data.error.config.url}`;
+        let msg = `z:${z} x:${x} y:${y} 错误码:${data.error.response && data.error.response.status
+          } url:${data.error.config.url}`;
         console.log(msg);
-        logs.push(msg);
+        this.logs.push(msg);
       }
     }
-    if (checkDone()) {
-      fs.writeFileSync("./error.txt", logs.join("\n"));
+    if (this.checkDone()) {
+      log.writeError(this.logs)
+      this.fire('on-complete')
     } else {
-      getTile();
+      this.getTile();
     }
+  }
+
+  checkDone() {
+    return !this.requestList.length && !this.tasks
+  }
 }
 
-function checkDone() {
-    return !requestList.length && !tasks
-}
+module.exports = RetryManager

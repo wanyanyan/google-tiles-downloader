@@ -1,4 +1,4 @@
-export default [
+module.exports = [
   {
     "name": "N8E113",
     "nw": { "lng": 113, "lat": 8 },
