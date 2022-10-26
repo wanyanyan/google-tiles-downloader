@@ -5,7 +5,7 @@ var log = require('./log')
 var util = require('./util')
 const RequestManager = require('./request_manager')
 const RetryManager = require('./retry')
-const concurrent = 10 // 最多允许的任务数
+const concurrent = 20 // 最多允许的任务数
 var tasks = 0
 var errorCount = 0  // 用于计算连续出错的瓦片数量
 
@@ -143,7 +143,7 @@ class TaskManager extends Event {
   pauseTask() {
     setTimeout(() => {
       this.requestZoom()
-    }, 24 * 60 * 60 * 1000)
+    }, 60 * 60 * 1000)
   }
   
 }

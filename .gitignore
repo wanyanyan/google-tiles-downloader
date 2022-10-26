@@ -20,7 +20,7 @@
 /*/*.sln
 /*/*.sw*
 
-tiles/
+dist/
 node_modules/
-/*/results/
-/*/logs/
+results/*
+logs/
