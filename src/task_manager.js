@@ -45,7 +45,7 @@ class TaskManager extends Event {
     tasks--
     if (error) {
       this.processError(error)
-      if (errorCount >= 20) {
+      if (errorCount >= 40 && !this.isPaused) {
         this.pauseTask()
         return
       }
@@ -81,6 +81,7 @@ class TaskManager extends Event {
   }
 
   requestZoom() {
+    this.isPaused = false
     log.addInfo(`开始请求第${this.task.progress.zoom}级`)
     let bounds = this.task.area.bounds
     let topLeftCoord = util.lngLat2TileCoord([bounds[0], bounds[3]], this.task.progress.zoom);
@@ -141,6 +142,7 @@ class TaskManager extends Event {
 
   // 如果出现连续出错，说明IP可能被封了，则暂停24小时以后再启动
   pauseTask() {
+    this.isPaused = true
     setTimeout(() => {
       this.requestZoom()
     }, 60 * 60 * 1000)
